@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <title>Keuanganku</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">KEUANGANKU</p>
+        <h1>Keuangan pribadi</h1>
+      </div>
+      <button id="themeBtn" class="icon-btn" aria-label="Ganti tema">☀️</button>
+    </header>
+
+    <main>
+      <section id="dashboard" class="page active">
+        <div class="balance-card">
+          <div>
+            <span>Saldo saat ini</span>
+            <strong id="balance">¥0</strong>
+          </div>
+          <span class="wallet-icon">💰</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat income">
+            <span>Pemasukan</span>
+            <strong id="income">¥0</strong>
+          </div>
+          <div class="stat expense">
+            <span>Pengeluaran</span>
+            <strong id="expense">¥0</strong>
+          </div>
+          <div class="stat saving">
+            <span>Tabungan</span>
+            <strong id="saving">¥0</strong>
+          </div>
+          <div class="stat transfer">
+            <span>Ke Indonesia</span>
+            <strong id="transfer">¥0</strong>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <h2>Pengeluaran bulan ini</h2>
+            <p id="monthLabel"></p>
+          </div>
+          <button class="text-btn" data-page="transactions">Lihat semua</button>
+        </div>
+
+        <div class="chart-card">
+          <canvas id="expenseChart"></canvas>
+          <p id="emptyChart" class="empty hidden">Belum ada pengeluaran bulan ini.</p>
+        </div>
+
+        <div class="section-head">
+          <h2>Transaksi terbaru</h2>
+          <button class="text-btn" data-page="transactions">Semua</button>
+        </div>
+        <div id="recentTransactions" class="transaction-list"></div>
+      </section>
+
+      <section id="transactions" class="page">
+        <div class="page-title">
+          <div>
+            <p class="eyebrow">RIWAYAT</p>
+            <h2>Semua transaksi</h2>
+          </div>
+          <button id="addBtn2" class="primary small">＋ Tambah</button>
+        </div>
+        <div class="filters">
+          <select id="filterType">
+            <option value="all">Semua</option>
+            <option value="income">Pemasukan</option>
+            <option value="expense">Pengeluaran</option>
+          </select>
+          <select id="filterCategory">
+            <option value="all">Semua kategori</option>
+          </select>
+        </div>
+        <div id="allTransactions" class="transaction-list"></div>
+      </section>
+
+      <section id="add" class="page">
+        <div class="page-title">
+          <div>
+            <p class="eyebrow">TRANSAKSI</p>
+            <h2 id="formTitle">Tambah transaksi</h2>
+          </div>
+        </div>
+
+        <form id="transactionForm" class="form-card">
+          <input type="hidden" id="editId">
+
+          <div class="type-switch">
+            <button type="button" class="type-btn active" data-type="expense">− Pengeluaran</button>
+            <button type="button" class="type-btn" data-type="income">＋ Pemasukan</button>
+          </div>
+
+          <label>
+            Nominal (¥)
+            <input id="amount" type="number" min="1" step="1" placeholder="Contoh: 1200" required>
+          </label>
+
+          <label>
+            Kategori
+            <select id="category" required></select>
+          </label>
+
+          <label>
+            Tanggal
+            <input id="date" type="date" required>
+          </label>
+
+          <label>
+            Catatan
+            <textarea id="description" rows="3" placeholder="Contoh: makan ramen"></textarea>
+          </label>
+
+          <div class="form-actions">
+            <button type="button" id="cancelEdit" class="secondary hidden">Batal</button>
+            <button type="submit" class="primary">Simpan transaksi</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="settings" class="page">
+        <div class="page-title">
+          <div>
+            <p class="eyebrow">PENGATURAN</p>
+            <h2>Pengaturan</h2>
+          </div>
+        </div>
+        <div class="settings-card">
+          <h3>Data</h3>
+          <p>Semua transaksi versi ini disimpan di browser perangkatmu menggunakan LocalStorage.</p>
+          <button id="exportBtn" class="secondary full">📤 Export data JSON</button>
+          <label class="import-label">
+            📥 Import data JSON
+            <input id="importInput" type="file" accept=".json,application/json">
+          </label>
+          <button id="clearBtn" class="danger full">Hapus semua data</button>
+        </div>
+        <div class="settings-card">
+          <h3>Tentang</h3>
+          <p>Keuanganku adalah aplikasi pencatatan keuangan sederhana untuk pemasukan, pengeluaran, tabungan, dan kiriman ke Indonesia.</p>
+          <p class="muted">Versi 1.0 • Offline-first</p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-page="dashboard"><span>🏠</span><small>Beranda</small></button>
+      <button class="nav-btn" data-page="transactions"><span>📋</span><small>Riwayat</small></button>
+      <button id="addBtn" class="add-nav" aria-label="Tambah transaksi">＋</button>
+      <button class="nav-btn" data-page="settings"><span>⚙️</span><small>Pengaturan</small></button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
